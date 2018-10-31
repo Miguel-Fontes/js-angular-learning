@@ -1,0 +1,14 @@
+{
+  "name": "js-angular-todo",
+  "version": "1.0.0",
+  "description": "Simple to-do app in Angular 1.x",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Miguel Fontes",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.7.5"
+  }
+}
