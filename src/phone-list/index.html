@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="phoneList">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lista Telefônica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="./../../node_modules/bootstrap/dist/css/bootstrap.css" />
+    <style>
+
+        .table {
+          margin-top: 20px
+        }
+
+        .jumbotron {
+            width: 400px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-control {
+            margin-bottom: 5px
+        }
+    </style>
+    <script src="main.js"></script>
+    <script src="./../../node_modules/angular/angular.js"></script>
+    <script>
+        var app = angular.module("phoneList", []);
+        app.controller("phoneListCtrl", function ($scope) {
+            $scope.app = "Lista Telefonica";
+            $scope.contacts = [
+                { name: "Pedro", phone: "99998888" },
+                { name: "João", phone: "99998877" },
+                { name: "Maria", phone: "99998866" },
+            ]
+
+            $scope.addContact = function (contact) {
+                $scope.contacts.push(contact)
+                delete $scope.contact
+            }
+        });
+    </script>
+</head>
+
+<body ng-controller="phoneListCtrl">
+
+    <div class="jumbotron">
+        <h3>{{app}}</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+            </tr>
+            <tr ng-repeat="contact in contacts">
+                <td>{{contact.name}}</td>
+                <td>{{contact.phone}}</td>
+            </tr>
+        </table>
+
+        <input type="text" class="form-control" ng-model="contact.name" placeholder="Name..." />
+        <input type="text" class="form-control" ng-model="contact.phone" placeholder="Phone..." />
+        <button class="btn btn-primary btn-block" ng-click="addContact(contact)">Add Contact</button>
+
+    </div>
+
+</body>
+
+</html>
