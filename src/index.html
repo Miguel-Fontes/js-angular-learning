@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="helloWorld">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <script src="../node_modules/angular/angular.js"></script>
+    <script>
+        var app = angular.module("helloWorld", []);
+        app.controller("helloWorldCtrl", function($scope) {
+            $scope.message = "Hello World";
+        });
+    </script>
+</head>
+<body>
+
+    <div ng-controller="helloWorldCtrl">
+        {{ message }}
+    </div>
+
+</body>
+</html>
