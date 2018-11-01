@@ -51,17 +51,17 @@
                 { name: "Embratel", code: 21, category: "Phone", price: 2 }
             ]
 
-            $scope.addContact = function (contact) {
+            $scope.addContact = contact => {
                 $scope.contacts.push(contact)
                 delete $scope.contact
-                $scope.contatoForm.$setPristine();
+                $scope.contactForm.$setPristine();
             }
 
-            $scope.deleteContact = function (contacts) {
+            $scope.deleteContact = contacts => {
                 $scope.contacts = contacts.filter(contact => !contact.selected)
             }
 
-            $scope.isContactSelected = function (contacts) {
+            $scope.isContactSelected = contacts => {
                 return contacts.some(contact => contact.selected);
             }
 
@@ -109,7 +109,7 @@
                 <option value="">Selecione uma operadora</option>
             </select>
         </form>
-        <div ng-messages="contatoForm.name.$error" ng-show="contatoForm.name.$error" class="alert alert-danger">
+        <div ng-messages="contactForm.name.$error" ng-show="contactForm.name.$dirty" class="alert alert-danger">
             <div ng-message="required">
                 Por favor, preencha o campo nome!
             </div>
@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <div ng-messages="contatoForm.phone.$error" ng-show="contatoForm.name.$error" class="alert alert-danger">
+        <div ng-messages="contactForm.phone.$error" ng-show="contactForm.phone.$dirty" class="alert alert-danger">
             <div ng-message="required">
                 Por favor, preencha o campo telefone!
             </div>
