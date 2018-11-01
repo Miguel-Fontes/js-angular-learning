@@ -34,8 +34,12 @@
     <script src="./../../node_modules/angular/angular.js"></script>
     <script src="./../../node_modules/angular-messages/angular-messages.js"></script>
     <script>
+
+        const QUOTES_API_URL = "https://talaikis.com/api/quotes/random/";
+
         var app = angular.module("phoneList", ["ngMessages"]);
-        app.controller("phoneListCtrl", function ($scope) {
+        app.controller("phoneListCtrl", function ($scope, $http) {
+            var vm = this;
             $scope.app = "Lista Telefonica";
             $scope.contacts = [
                 { name: "Pedro", phone: "99998888", provider: { name: "Oi", code: 14, category: "Mobile", price: 2 }, date: new Date(), color: "red" },
@@ -50,6 +54,17 @@
                 { name: "GVT", code: 25, category: "Phone", price: 1 },
                 { name: "Embratel", code: 21, category: "Phone", price: 2 }
             ]
+
+            vm.$onInit = () => {
+                $scope.quote = "";
+                getQuote();
+            }
+
+            const getQuote = () => {
+                $http.get(QUOTES_API_URL).then(response => {
+                    $scope.quote = response.data.quote + " - " + response.data.author;
+                });
+            }
 
             $scope.addContact = contact => {
                 $scope.contacts.push(contact)
@@ -137,6 +152,8 @@
         </button>
 
     </div>
+
+    {{ quote }}
 
 </body>
 
