@@ -22,6 +22,7 @@
         .form-control {
             margin-bottom: 5px;
         }
+
         .selected {
             background-color: yellow;
         }
@@ -81,7 +82,7 @@
             </tr>
             <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts">
                 <td><input type="checkbox" ng-model="contact.selected" /></td>
-                <td>{{contact.name}}</td>
+                <td>{{contact.name | uppercase}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.provider.name}}</td>
                 <td>
