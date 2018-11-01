@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="./../../node_modules/bootstrap/dist/css/bootstrap.css" />
     <style>
-
         .table {
           margin-top: 20px
         }
@@ -32,14 +31,15 @@
         }
     </style>
     <script src="./../../node_modules/angular/angular.js"></script>
+    <script src="./../../node_modules/angular-messages/angular-messages.js"></script>
     <script>
-        var app = angular.module("phoneList", []);
+        var app = angular.module("phoneList", ["ngMessages"]);
         app.controller("phoneListCtrl", function ($scope) {
             $scope.app = "Lista Telefonica";
             $scope.contacts = [
-                { name: "Pedro", phone: "99998888", provider: "", color:"red" },
-                { name: "João", phone: "99998877", provider: "", color:"blue" },
-                { name: "Maria", phone: "99998866", provider: "", color:"yellow" },
+                { name: "Pedro", phone: "99998888", provider: "", color: "red" },
+                { name: "João", phone: "99998877", provider: "", color: "blue" },
+                { name: "Maria", phone: "99998866", provider: "", color: "yellow" },
             ]
 
             $scope.providers = [
@@ -53,13 +53,14 @@
             $scope.addContact = function (contact) {
                 $scope.contacts.push(contact)
                 delete $scope.contact
+                $scope.contatoForm.$setPristine();
             }
 
             $scope.deleteContact = function (contacts) {
                 $scope.contacts = contacts.filter(contact => !contact.selected)
             }
 
-            $scope.isContactSelected = function(contacts) {
+            $scope.isContactSelected = function (contacts) {
                 return contacts.some(contact => contact.selected);
             }
         });
@@ -83,16 +84,43 @@
                 <td>{{contact.name}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.provider.name}}</td>
-                <td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contact.color}"></div></td>
+                <td>
+                    <div style="width: 20px; height: 20px;" ng-style="{'background-color': contact.color}"></div>
+                </td>
             </tr>
         </table>
 
-        <input type="text" class="form-control" ng-model="contact.name" placeholder="Nome..." />
-        <input type="text" class="form-control" ng-model="contact.phone" placeholder="Telefone..." number />
-        <select class="form-control" ng-model="contact.provider" ng-options="provider.name group by provider.category for provider in providers">
-            <option value="">Selecione uma operadora</option>
-        </select>
-        <button class="btn btn-primary btn-block" ng-click="addContact(contact)" ng-disabled="!contact.name || !contact.phone">
+        <form name="contactForm">
+            <input type="text" class="form-control" ng-model="contact.name" name="name" placeholder="Nome..."
+                ng-required="true" ng-minlength="10" />
+            <input type="text" class="form-control" ng-model="contact.phone" name="phone" placeholder="Telefone..."
+                number ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
+            <select class="form-control" ng-model="contact.provider" name="provider" ng-options="provider.name group by provider.category for provider in providers"
+                ng-required="true">
+                <option value="">Selecione uma operadora</option>
+            </select>
+        </form>
+        <div ng-messages="contatoForm.name.$error" class="alert alert-danger">
+            <div ng-message="required">
+                Por favor, preencha o campo nome!
+            </div>
+            <div ng-message="minlength">
+                O campo nome deve ter no mínimo 10 caracteres.
+            </div>
+        </div>
+
+        <div ng-messages="contatoForm.phone.$error" class="alert alert-danger">
+            <div ng-message="required">
+                Por favor, preencha o campo telefone!
+            </div>
+            <div ng-message="pattern">
+                O campo telefone deve ter o formato DDDDD-DDDD
+            </div>
+        </div>
+        <div class="alert alert-danger" ng-show="contactForm.provider.$invalid && contactForm.provider.$dirty">
+            Por favor, preencha o campo operadora!
+        </div>
+        <button class="btn btn-primary btn-block" ng-click="addContact(contact)" ng-disabled="contactForm.$invalid">
             Add Contact
         </button>
         <button class="btn btn-danger btn-block" ng-click="deleteContact(contacts)" ng-disabled="!isContactSelected(contacts)">
