@@ -13,7 +13,7 @@
         }
 
         .jumbotron {
-            width: 400px;
+            width: 600px;
             text-align: center;
             margin-left: auto;
             margin-right: auto;
@@ -38,17 +38,17 @@
         app.controller("phoneListCtrl", function ($scope) {
             $scope.app = "Lista Telefonica";
             $scope.contacts = [
-                { name: "Pedro", phone: "99998888", provider: "", color: "red" },
-                { name: "João", phone: "99998877", provider: "", color: "blue" },
-                { name: "Maria", phone: "99998866", provider: "", color: "yellow" },
+                { name: "Pedro", phone: "99998888", provider: { name: "Oi", code: 14, category: "Mobile", price: 2 }, date: new Date(), color: "red" },
+                { name: "João", phone: "99998877", provider: { name: "Vivo", code: 15, category: "Mobile", price: 1 }, date: new Date(), color: "blue" },
+                { name: "Maria", phone: "99998866", provider: { name: "GVT", code: 25, category: "Phone", price: 1 }, date: new Date(), color: "yellow" },
             ]
 
             $scope.providers = [
-                { name: "Oi", code: 14, category: "Mobile" },
-                { name: "Vivo", code: 15, category: "Mobile" },
-                { name: "Tim", code: 41, category: "Mobile" },
-                { name: "GVT", code: 25, category: "Phone" },
-                { name: "Embratel", code: 21, category: "Phone" }
+                { name: "Oi", code: 14, category: "Mobile", price: 2 },
+                { name: "Vivo", code: 15, category: "Mobile", price: 1 },
+                { name: "Tim", code: 41, category: "Mobile", price: 3 },
+                { name: "GVT", code: 25, category: "Phone", price: 1 },
+                { name: "Embratel", code: 21, category: "Phone", price: 2 }
             ]
 
             $scope.addContact = function (contact) {
@@ -64,6 +64,11 @@
             $scope.isContactSelected = function (contacts) {
                 return contacts.some(contact => contact.selected);
             }
+
+            $scope.orderBy = field => {
+                $scope.orderingCriteria = field;
+                $scope.orderingDirection = !$scope.orderingDirection;
+            }
         });
     </script>
 </head>
@@ -72,19 +77,22 @@
 
     <div class="jumbotron">
         <h3>{{app}}</h3>
+        <input type="text" class="form-control" ng-model="searchCriteria" placeholder="O que você está buscando?">
         <table class="table">
             <tr>
                 <th></th>
-                <th>Nome</th>
-                <th>Telefone</th>
+                <th><a href="" ng-click="orderBy('name')">Name</a></th>
+                <th><a href="" ng-click="orderBy('phone')">Telefone</a></th>
                 <th>Provider</th>
+                <th>Date</th>
                 <th></th>
             </tr>
-            <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts">
+            <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts | filter:{name: searchCriteria} | orderBy:'orderingCriteria':orderingDirection">
                 <td><input type="checkbox" ng-model="contact.selected" /></td>
                 <td>{{contact.name | uppercase}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.provider.name}}</td>
+                <td>{{contact.date | date:'dd/MM/yyyy HH:mm'}}</td>
                 <td>
                     <div style="width: 20px; height: 20px;" ng-style="{'background-color': contact.color}"></div>
                 </td>
@@ -96,12 +104,12 @@
                 ng-required="true" ng-minlength="10" />
             <input type="text" class="form-control" ng-model="contact.phone" name="phone" placeholder="Telefone..."
                 number ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
-            <select class="form-control" ng-model="contact.provider" name="provider" ng-options="provider.name group by provider.category for provider in providers"
+            <select class="form-control" ng-model="contact.provider" name="provider" ng-options="provider.name + ' (' + (provider.price | currency) + ') ' group by provider.category for provider in providers | orderBy:'name'"
                 ng-required="true">
                 <option value="">Selecione uma operadora</option>
             </select>
         </form>
-        <div ng-messages="contatoForm.name.$error" class="alert alert-danger">
+        <div ng-messages="contatoForm.name.$error" ng-show="contatoForm.name.$error" class="alert alert-danger">
             <div ng-message="required">
                 Por favor, preencha o campo nome!
             </div>
@@ -110,7 +118,7 @@
             </div>
         </div>
 
-        <div ng-messages="contatoForm.phone.$error" class="alert alert-danger">
+        <div ng-messages="contatoForm.phone.$error" ng-show="contatoForm.name.$error" class="alert alert-danger">
             <div ng-message="required">
                 Por favor, preencha o campo telefone!
             </div>
