@@ -2,11 +2,10 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
 
   var vm = this;
 
-  console.log(serialGenerator.generate())
-
   $scope.app = "Lista Telefonica";
   $scope.contacts = [
     {
+      serial: serialGenerator.generate(),
       name: "Pedro",
       phone: "99998888",
       provider: { name: "Oi", code: 14, category: "Mobile", price: 2 },
@@ -14,6 +13,7 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
       color: "red"
     },
     {
+      serial: serialGenerator.generate(),
       name: "João",
       phone: "99998877",
       provider: { name: "Vivo", code: 15, category: "Mobile", price: 1 },
@@ -21,6 +21,7 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
       color: "blue"
     },
     {
+      serial: serialGenerator.generate(),
       name: "Maria",
       phone: "99998866",
       provider: { name: "GVT", code: 25, category: "Phone", price: 1 },
@@ -39,6 +40,11 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
 
   vm.$onInit = () => {
     $scope.quote = "";
+
+    // Initialize with some data for testing
+    $scope.contact = {};
+    $scope.contact.name = "Miguel Fontes";
+    $scope.contact.phone = "99999-9999";
   };
 
   activate();
@@ -55,6 +61,7 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
 
   $scope.addContact = contact => {
     contact.serial = serialGenerator.generate();
+    contact.date = new Date();
     $scope.contacts.push(contact);
     delete $scope.contact;
     $scope.contactForm.$setPristine();

@@ -14,8 +14,10 @@
     <script src="js/controllers/phoneListCtrl.js"></script>
     <script src="js/services/quotesAPIService.js"></script>
     <script src="js/services/serialGeneratorService.js"></script>
-    <script src="js/config/configValue.js"></script>
+    <script src="js/value/configValue.js"></script>
     <script src="js/config/serialGeneratorConfig.js"></script>
+    <script src="js/filters/nameFilter.js"></script>
+    <script src="js/filters/ellipsisFilter.js"></script>
 </head>
 
 <body ng-controller="phoneListCtrl">
@@ -35,7 +37,7 @@
             <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts | filter:{name: searchCriteria} | orderBy:'orderingCriteria':orderingDirection">
                 <td><input type="checkbox" ng-model="contact.selected" /></td>
                 <td>{{contact.serial}}</td>
-                <td>{{contact.name | uppercase}}</td>
+                <td>{{contact.name | name | ellipsis:10}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.provider.name}}</td>
                 <td>{{contact.date | date:'dd/MM/yyyy HH:mm'}}</td>
