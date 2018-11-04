@@ -1,11 +1,13 @@
-angular.module("phoneList").provider("serialGenerator", function () {
-  var _length = 10;
+angular.module("serialGenerator", []);
+
+angular.module("phoneList").provider("serialGenerator", function() {
+  var _length = 5;
 
   this.setLength = length => {
     _length = length;
-  }
+  };
 
-  this.$get = function () {
+  this.$get = function() {
     return {
       generate: () => {
         var serial = "";

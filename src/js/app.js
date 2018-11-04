@@ -1,1 +1,1 @@
-var app = angular.module("phoneList", ["ngMessages"]);
+var app = angular.module("phoneList", ["ngMessages", "serialGenerator", "ui"]);
