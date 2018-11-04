@@ -1,7 +1,8 @@
-app.controller("phoneListCtrl", function($scope, $http) {
-  const QUOTES_API_URL = "https://talaikis.com/api/quotes/random/";
+app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
 
   var vm = this;
+
+  console.log(serialGenerator.generate())
 
   $scope.app = "Lista Telefonica";
   $scope.contacts = [
@@ -47,12 +48,13 @@ app.controller("phoneListCtrl", function($scope, $http) {
   }
 
   function getQuote() {
-    $http.get(QUOTES_API_URL).then(response => {
+    quotesAPI.getQuote().then(response => {
       $scope.quote = response.data.quote + " - " + response.data.author;
     });
   }
 
   $scope.addContact = contact => {
+    contact.serial = serialGenerator.generate();
     $scope.contacts.push(contact);
     delete $scope.contact;
     $scope.contactForm.$setPristine();
