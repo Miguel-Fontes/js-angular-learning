@@ -1,6 +1,6 @@
 angular.module("serialGenerator", []);
 
-angular.module("phoneList").provider("serialGenerator", function() {
+angular.module("serialGenerator").provider("serialGenerator", function() {
   var _length = 5;
 
   this.setLength = length => {
