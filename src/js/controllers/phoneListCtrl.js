@@ -1,5 +1,4 @@
 app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
-
   var vm = this;
 
   $scope.app = "Lista Telefonica";
@@ -45,6 +44,7 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
     $scope.contact = {};
     $scope.contact.name = "Miguel Fontes";
     $scope.contact.phone = "99999-9999";
+    $scope.contact.date = 553921200000;
   };
 
   activate();
@@ -54,9 +54,14 @@ app.controller("phoneListCtrl", function($scope, quotesAPI, serialGenerator) {
   }
 
   function getQuote() {
-    quotesAPI.getQuote().then(response => {
-      $scope.quote = response.data.quote + " - " + response.data.author;
-    });
+    quotesAPI.getQuote().then(
+      response => {
+        $scope.quote = response.data.quote + " - " + response.data.author;
+      },
+      failure => {
+        $scope.error = "Não foi possível carregar os dados!";
+      }
+    );
   }
 
   $scope.addContact = contact => {

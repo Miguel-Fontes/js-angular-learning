@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="../node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/ui.css" />
     <script src="../node_modules/angular/angular.js"></script>
     <script src="../node_modules/angular-messages/angular-messages.js"></script>
     <script src="js/app.js"></script>
@@ -18,11 +19,18 @@
     <script src="js/config/serialGeneratorConfig.js"></script>
     <script src="js/filters/nameFilter.js"></script>
     <script src="js/filters/ellipsisFilter.js"></script>
+    <script src="js/directives/uiAlertDirective.js"></script>
+    <script src="js/directives/uiDateDirective.js"></script>
+    <script src="js/directives/uiQuoteDirective.js"></script>
+    <script src="js/directives/uiFooterDirective.js"></script>
 </head>
 
 <body ng-controller="phoneListCtrl">
     <div class="jumbotron">
         <h3>{{app}}</h3>
+
+        <ui-alert title="Ops, aconteceu um problema!" message="error" ng-show="error"></ui-alert>
+
         <input type="text" class="form-control" ng-model="searchCriteria" placeholder="O que você está buscando?">
         <table class="table">
             <tr>
@@ -51,7 +59,8 @@
             <input type="text" class="form-control" ng-model="contact.name" name="name" placeholder="Nome..."
                 ng-required="true" ng-minlength="10" />
             <input type="text" class="form-control" ng-model="contact.phone" name="phone" placeholder="Telefone..."
-                number ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
+                number ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/" />
+            <input type="text" class="form-control" ng-model="contact.date" name="date" placeholder="Date" ui-date />
             <select class="form-control" ng-model="contact.provider" name="provider" ng-options="provider.name + ' (' + (provider.price | currency) + ') ' group by provider.category for provider in providers | orderBy:'name'"
                 ng-required="true">
                 <option value="">Selecione uma operadora</option>
@@ -86,15 +95,9 @@
 
     </div>
 
+    <ui-quote quote="quote"></ui-quote>
 
-    <footer class="footer">
-        <div class="container">
-            <span class="text-muted">{{ quote }}</span>
-        </div>
-    </footer>
-
+    <ui-footer author="Miguel Fontes"></ui-footer>
 </body>
-
-<div ng-include="'view/footer.html'"></div>
 
 </html>
